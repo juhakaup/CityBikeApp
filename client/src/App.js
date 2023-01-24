@@ -1,5 +1,6 @@
 import React from 'react';
 import { DataGridForJourneys, DataGridForStations } from './components/DataGrid';
+import StationView from './components/StationView';
 import {
   BrowserRouter as Router,
   Routes, Route, Link
@@ -17,12 +18,13 @@ function App() {
       </div>
 
       <Routes>
-        <Route path="/" element={<DataGridForJourneys />} />
+        <Route path="/stations/:id" element={<StationView />} />
         <Route path="/stations" element={<DataGridForStations />} />
         {/* <Route path="/maps" element={<DataGridForStations />} /> */}
+        <Route path="/" element={<DataGridForJourneys />} />
       </Routes>
       <div>
-        <i>Note app, Department of Computer Science 2022</i>
+        <i>City Bike Journey app - Juha Kauppinen 2023</i>
       </div>
     </Router>
   )
