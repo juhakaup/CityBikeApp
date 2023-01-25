@@ -15,9 +15,13 @@ import '@fontsource/roboto/700.css';
  */
 const DataGridForJourneys = () => {
   const [journeys, setJourneys] = useState([]);
+  const [pageSize, setPageSize] = useState(20);
+  const [page, setPage] = useState(1);
+  const [rowCount, setRowCount] = useState(0);
+  const [sortBy, setSortBy] = useState({field: 'departure', sort: 'asc'});
 
   useEffect(() => {
-    axios.get('http://localhost:3001/api/journeys')
+    axios.get(`http://localhost:3001/api/journeys?page=${page}&size=${pageSize}&field=${sortBy.field}&order=${sortBy.sort}`)
     .then(res => {
       const data = res.data.content.map(journey => ({
         'id': journey.id,
@@ -27,8 +31,9 @@ const DataGridForJourneys = () => {
         'duration': journey.duration,
       }))
       setJourneys(data)
+      setRowCount(res.data.rows)
     })
-  }, [])
+  }, [pageSize, page, sortBy])
 
   const columns = [
     {field: "departure", headerName: "Departure", width: 250, 
@@ -55,9 +60,14 @@ const DataGridForJourneys = () => {
         <Typography color="textSecondary" variant="caption" display="block" gutterBottom>{params.value.time}</Typography>
       </div>
     )},
-    {field: "distance", headerName: "Distance", width: 90 },
-    {field: "duration", headerName: "Duration", width: 90 },
+    {field: "distance", headerName: "Distance", width: 120 },
+    {field: "duration", headerName: "Duration", width: 120 },
   ]
+
+  const handleSortModelChange = (e) => {
+    setSortBy(e[0]);
+    console.log(sortBy)
+  } 
   
   return (
     <div style={{ display: 'flex', width:'800px' }}>
@@ -65,9 +75,17 @@ const DataGridForJourneys = () => {
         <DataGrid
           rows={journeys}
           columns={columns}
-          pageSize={10}
-          rowsPerPageOptions={[10,25,50,100]}
+          rowsPerPageOptions={[10,20,50,100]}
           autoHeight 
+          pagination
+          paginationMode="server"
+          pageSize={pageSize}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+          page={page}
+          onPageChange={(newPage) => setPage(newPage)}
+          rowCount={rowCount}
+          sortingMode="server"
+          onSortModelChange={handleSortModelChange}
         />
        </div>
     </div>
