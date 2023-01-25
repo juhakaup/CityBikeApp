@@ -44,7 +44,7 @@ function App() {
         </Routes>
       </Box>
       
-      <Box position="fixed" bottom="0" width="100%" justifyContent="center" display="flex" >
+      <Box bottom="0" width="100%" justifyContent="center" display="flex" >
         <i>City Bike Journey app - Juha Kauppinen 2023</i>
       </Box>
     </Router>
