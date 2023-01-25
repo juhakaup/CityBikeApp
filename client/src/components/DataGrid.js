@@ -9,6 +9,10 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
+/**
+ * DataGrid for listing journeys
+ * @returns DataGrid
+ */
 const DataGridForJourneys = () => {
   const [journeys, setJourneys] = useState([]);
 
@@ -30,14 +34,24 @@ const DataGridForJourneys = () => {
     {field: "departure", headerName: "Departure", width: 250, 
     renderCell: (params) => (
       <div>
-        <Typography variant="subtitle2"><Link href={`/stations/${params.value.id}`}>{params.value.station}</Link></Typography>
-        <Typography color="textSecondary" variant="caption" display="block" gutterBottom>{params.value.time}</Typography>
+        <Typography variant="subtitle2">
+          <Link href={`/stations/${params.value.id}`} underline="none" color="inherit">
+            {params.value.station}
+          </Link>
+        </Typography>
+        <Typography color="textSecondary" variant="caption" display="block" gutterBottom>
+          {params.value.time}
+        </Typography>
       </div>
     )},
     {field: "return", headerName: "Return", width: 250, 
     renderCell: (params) => (
       <div>
-        <Typography variant="subtitle2"><Link href={`/stations/${params.value.id}`}>{params.value.station}</Link></Typography>
+        <Typography variant="subtitle2">
+          <Link href={`/stations/${params.value.id}`} underline="none" color="inherit">
+            {params.value.station}
+          </Link>
+        </Typography>
         <Typography color="textSecondary" variant="caption" display="block" gutterBottom>{params.value.time}</Typography>
       </div>
     )},
@@ -46,7 +60,7 @@ const DataGridForJourneys = () => {
   ]
   
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: 'flex', width:'800px' }}>
       <div style={{ flexGrow: 1 }}>
         <DataGrid
           rows={journeys}
@@ -60,6 +74,10 @@ const DataGridForJourneys = () => {
   )
 }
 
+/**
+ * DataGrid for listing stations
+ * @returns DataGrid
+ */
 const DataGridForStations = () => {
   const [stations, setStations] = useState([]);
 
@@ -82,7 +100,11 @@ const DataGridForStations = () => {
     {field: "station", headerName: "Station", width: 140,
     renderCell: (params) => (
       <div>
-        <Typography variant="subtitle2"><Link href={`/stations/${params.value.id}`}>{params.value.name}</Link></Typography>
+        <Typography variant="subtitle2">
+          <Link href={`/stations/${params.value.id}`} underline="none" color="inherit">
+            {params.value.name}
+          </Link>
+        </Typography>
       </div>
     )},
     {field: "address", headerName: "Location", width: 250, 
@@ -97,7 +119,7 @@ const DataGridForStations = () => {
   ]
   
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: 'flex', width:'800px' }}>
       <div style={{ flexGrow: 1 }}>
         <DataGrid
           rows={stations}
