@@ -3,6 +3,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -26,7 +27,7 @@ const DataGridForJourneys = () => {
       const data = res.data.content.map(journey => ({
         'id': journey.id,
         'departure': {'station': journey.departureStationName, 'time': journey.departure, 'id': journey.departureStationId},
-        'return': {'station': journey.returnStationName, 'time': journey.return, 'id': journey.departureStationId},
+        'return': {'station': journey.returnStationName, 'time': journey.return, 'id': journey.returnStationId},
         'distance': journey.distance,
         'duration': journey.duration,
       }))
@@ -96,24 +97,7 @@ const DataGridForJourneys = () => {
  * DataGrid for listing stations
  * @returns DataGrid
  */
-const DataGridForStations = () => {
-  const [stations, setStations] = useState([]);
-
-  useEffect(() => {
-    axios.get('http://localhost:3001/api/stations')
-    .then(res => {
-      const data = res.data.content.map(station => ({
-        'id': station.id,
-        'station': { 'name': station.nameFin, 'id': station.id },
-        'address': { 'street': station.addressFin, 'city': station.cityFin },
-        'operator': station.operator,
-        'capacity': station.capacity,
-        'location': [station.locationY, station.locationX],
-      }))
-      setStations(data)
-    })
-  }, [])
-
+const DataGridForStations = ({ stations }) => {
   const columns = [
     {field: "station", headerName: "Station", width: 140,
     renderCell: (params) => (
@@ -149,6 +133,10 @@ const DataGridForStations = () => {
        </div>
     </div>
   )
+}
+
+DataGridForStations.propTypes = {
+  stations: PropTypes.array,
 }
 
 export { DataGridForJourneys, DataGridForStations };

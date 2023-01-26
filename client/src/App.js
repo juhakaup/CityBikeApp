@@ -1,16 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import './index.css';
 import { DataGridForJourneys, DataGridForStations } from './components/DataGrid';
 import StationView from './components/StationView.js';
-import {
-  BrowserRouter as Router,
-  Routes, Route, Link
-} from "react-router-dom";
-import './index.css';
+import stationService from './services/stations';
+// import getAll from './services/stations'
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { AppBar, Box, Toolbar, Typography } from '@mui/material';
 
 function App() {
+  const [stations, setStations] = useState([]);
+
+  useEffect(() => {
+    stationService.getAll()
+    .then(res => {
+      const data = res.content.map(station => ({
+        'id': station.id,
+        'station': { 'name': station.nameFin, 'id': station.id },
+        'address': { 'street': station.addressFin, 'city': station.cityFin },
+        'operator': station.operator,
+        'capacity': station.capacity,
+        'location': [station.locationY, station.locationX],
+      }))
+      setStations(data);
+    })      
+  },[])
+
   return (
-    <Router>
+    <BrowserRouter>
       <Box sx={{ flexGrow: 1 }} >
         <AppBar position="static">
           <Toolbar>
@@ -37,8 +53,8 @@ function App() {
         justifyContent="center"
       >
         <Routes>
-          <Route path="/stations/:id" element={<StationView />} />
-          <Route path="/stations" element={<DataGridForStations position="right"/>} />
+          <Route path="/stations/:id" element={<StationView stations={stations}/>} />
+          <Route path="/stations" element={<DataGridForStations stations={stations} position="right"/>} />
           {/* <Route path="/maps" element={<DataGridForStations />} /> */}
           <Route path="/" element={<DataGridForJourneys />} />
         </Routes>
@@ -47,7 +63,7 @@ function App() {
       <Box bottom="0" width="100%" justifyContent="center" display="flex" >
         <i>City Bike Journey app - Juha Kauppinen 2023</i>
       </Box>
-    </Router>
+    </BrowserRouter>
   )
 }
 

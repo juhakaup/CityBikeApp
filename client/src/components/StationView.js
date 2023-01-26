@@ -1,26 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useParams } from "react-router-dom"
+import PropTypes from 'prop-types';
+import { Paper } from '@mui/material';
 
-const StationView = () => {
+const StationView = ({ stations }) => {
   const id = useParams().id
-  const [station, setStation] = useState([]);
+  const [station, setStation] = useState(undefined);
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/api/stations/${id}`)
-    .then(res => setStation(res.data))
-  }, [])
+    const element = stations.find(element => element.id == id);
+    setStation(element)
+  }, [stations])
 
-  console.log(station)
+  if (station) {
+    return(
+      <Paper elevation={3} sx={{ width:'500px', height:'200px' }}>
+        <h2>{ station.station.name }</h2>
+        <p>{ station.address.street }, { station.address.city }</p>
+        <p>Operator: { station.operator }</p>
+        <p>Capacity: { station.capacity }</p>
+      </Paper>
+    )
+  } else {
+    return (<div>loading...</div>)
+  }
+}
 
-  return(
-    <div>
-      <h2>{ station.nameFin }</h2>
-      <p>{ station.addressFin }, { station.cityFin }</p>
-      <p>Operator: { station.operator }</p>
-      <p>Capacity: { station.capacity }</p>
-    </div>
-  )
+StationView.propTypes = {
+  stations: PropTypes.array,
 }
 
 export default StationView;
