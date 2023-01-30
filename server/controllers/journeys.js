@@ -5,24 +5,26 @@ const { Journey } = require('../models')
 router.get('/', async (req, res) => {
   reqPage = parseInt(req.query.page);
   reqSize = parseInt(req.query.size);
+  reqSortBy = req.query.field;
+  reqSortOrder = req.query.order;
+  sortFields = ['departure', 'return', 'distance', 'duration'];
 
   const page = (!isNaN(reqPage) && reqPage > 0) ? reqPage : 0;
-  const size = (!isNaN(reqSize) && reqSize > 0 && reqSize <= 100 ? reqSize : 10)
+  const size = (!isNaN(reqSize) && reqSize > 0 && reqSize <= 100 ? reqSize : 15)
+  const sortBy = sortFields.includes(reqSortBy) ? reqSortBy : 'departure';
+  const order = reqSortOrder == 'desc' ? 'DESC' : 'ASC';
 
   const { count, rows } = await Journey.findAndCountAll({
-    // where: {
-    //   departureStationId: id
-    // },
-    // order: [
-    //   ['distance', 'DESC'],
-    // ],
+    order: [
+      [sortBy, order],
+    ],
     offset: page * size,
     limit: size
   });
 
   res.json({
     content: rows,
-    numPages: Math.ceil(count / size)
+    rows: count
   });
 })
 

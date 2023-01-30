@@ -1,33 +1,79 @@
 const router = require('express').Router();
-const { Station } = require('../models');
+const { Station, Journey, Sequelize } = require('../models');
 
 // Get all stations
 router.get('/', async (req, res) => {
-  reqPage = parseInt(req.query.page);
-  reqSize = parseInt(req.query.size);
-
-  const page = (!isNaN(reqPage) && reqPage > 0) ? reqPage : 0;
-  const size = (!isNaN(reqSize) && reqSize > 0 && reqSize <= 100 ? reqSize : 10)
-
-  const { count, rows } = await Station.findAndCountAll({
-    offset: page * size,
-    limit: size
-  });
-
+  const { count, rows } = await Station.findAndCountAll();
   res.json({
     content: rows,
-    numPages: Math.ceil(count / size)
+    rows: count
   });
 })
 
 // Get a single station
 router.get('/:id', async (req, res) => {
+  const id = Number(req.params.id);
+
+  if (isNaN(id)) {
+    res.status(400).json({success: false, message: 'Station id should be a number'});
+  }
+
+  if (id < 1) {
+    res.status(400).json({success: false, message: 'Station id cannot be nagative'});
+  }
+  
   const station = await Station.findByPk(req.params.id);
   if (station) {
     res.json(station);
   } else {
     res.status(404).end();
   }
+})
+
+router.get('/:id/stats', async (req, res) => {
+  const id = Number(req.params.id);
+
+  if (isNaN(id)) {
+    res.status(400).json({success: false, message: 'Station id should be a number'});
+  }
+
+  if (id < 1) {
+    res.status(400).json({success: false, message: 'Station id cannot be nagative'});
+  }
+
+  // get top stations from the requested station
+  const fromThisStation = await Journey.findAll({
+    attributes: [
+      'return_station_id',
+      [Sequelize.fn('COUNT', Sequelize.col('id')), 'count'],
+    ],
+    where: {
+      departure_station_id: id
+    },
+    group: ['return_station_id'],
+    order: [
+      [Sequelize.literal('count'), 'DESC'],
+    ],
+    limit: 5
+  })
+
+  // get top stations to requested station
+  const toThisStation = await Journey.findAll({
+    attributes: [
+      'departure_station_id',
+      [Sequelize.fn('COUNT', Sequelize.col('id')), 'count'],
+    ],
+    where: {
+      return_station_id: id
+    },
+    group: ['departure_station_id'],
+    order: [
+      [Sequelize.literal('count'), 'DESC'],
+    ],
+    limit: 5
+  })
+
+  res.json({ topDestinations: fromThisStation, topOrigins: toThisStation });
 })
 
 module.exports = router
