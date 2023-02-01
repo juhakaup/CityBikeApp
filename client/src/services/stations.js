@@ -10,5 +10,10 @@ const getAll = () => {
   return request.then(res => res.data)
 }
 
+const getStats = (id) => {
+  const request = axios.get(`${baseUrl}/${id}/stats`)
+  return request.then(res => res.data)
+}
 
-export default { getAll }
+
+export default { getAll, getStats }

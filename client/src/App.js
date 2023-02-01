@@ -76,8 +76,8 @@ function App() {
         <Routes>
           <Route path="/stations/:id" element={<StationView stations={stations}/>} />
           <Route path="/stations" element={<DataGridForStations stations={stations} />} />
-          <Route path="/map" element={<StationsOnMap/> } />
-          <Route path="/" element={<DataGridForJourneys />} />
+          <Route path="/map" element={<StationsOnMap stations={stations} />} />
+          <Route path="/" element={<DataGridForJourneys stations={stations}/>} />
         </Routes>
       </Box>
       
