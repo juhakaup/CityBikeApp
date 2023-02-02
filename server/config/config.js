@@ -1,4 +1,4 @@
-const { PGUSER, PGPASSWORD, PGHOST, PGDATABASE } = require('../util/config');
+const { PGUSER, PGPASSWORD, PGHOST, PGDATABASE, PGPORT } = require('../util/config');
 module.exports = 
 {
   "development": {
@@ -6,8 +6,9 @@ module.exports =
     "password": PGPASSWORD,
     "database": PGDATABASE,
     "host": PGHOST,
+    "port": PGPORT,
     "dialect": "postgres",
-    "logging": true
+    "logging": false
   },
   "test": {
     "username": PGUSER,

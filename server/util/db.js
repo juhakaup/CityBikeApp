@@ -1,8 +1,9 @@
 const { Sequelize } = require('sequelize');
-const { PGDATABASE, PGUSER, PGPASSWORD, PGHOST } = require('./config')
+const { PGDATABASE, PGUSER, PGPASSWORD, PGHOST, PGPORT } = require('./config')
 
 const sequelize = new Sequelize(PGDATABASE, PGUSER, PGPASSWORD, {
   host: PGHOST,
+  port: PGPORT,
   dialect: 'postgres'
 });
 
