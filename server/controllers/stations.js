@@ -44,13 +44,14 @@ router.get('/:id/stats', async (req, res) => {
   // get top stations from the requested station
   const fromThisStation = await Journey.findAll({
     attributes: [
-      'return_station_id',
+      ['return_station_id', 'id'],
+      ['return_station_name', 'name'],
       [Sequelize.fn('COUNT', Sequelize.col('id')), 'count'],
     ],
     where: {
       departure_station_id: id
     },
-    group: ['return_station_id'],
+    group: ['return_station_id', 'return_station_name'],
     order: [
       [Sequelize.literal('count'), 'DESC'],
     ],
@@ -60,13 +61,14 @@ router.get('/:id/stats', async (req, res) => {
   // get top stations to requested station
   const toThisStation = await Journey.findAll({
     attributes: [
-      'departure_station_id',
+      ['departure_station_id', 'id'],
+      ['departure_station_name', 'name'],
       [Sequelize.fn('COUNT', Sequelize.col('id')), 'count'],
     ],
     where: {
       return_station_id: id
     },
-    group: ['departure_station_id'],
+    group: ['departure_station_id', 'departure_station_name'],
     order: [
       [Sequelize.literal('count'), 'DESC'],
     ],
@@ -74,6 +76,32 @@ router.get('/:id/stats', async (req, res) => {
   })
 
   res.json({ topDestinations: fromThisStation, topOrigins: toThisStation });
+})
+
+router.get('/:id/counts', async (req, res) => {
+  const id = Number(req.params.id);
+
+  if (isNaN(id)) {
+    res.status(400).json({success: false, message: 'Station id should be a number'});
+  }
+
+  if (id < 1) {
+    res.status(400).json({success: false, message: 'Station id cannot be nagative'});
+  }
+  
+  const countFrom = await Journey.count({
+    where: {
+      departure_station_id: id
+    }
+  });
+
+  const countTo = await Journey.count({
+    where: {
+      return_station_id: id
+    }
+  });
+
+  res.json({journeysFromStation: countFrom, journeysToStation: countTo});
 })
 
 module.exports = router

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { DataGrid } from '@mui/x-data-grid';
 import Typography from '@mui/material/Typography';
-import Link from '@mui/material/Link';
-import axios from 'axios';
+import { Box } from '@mui/system';
+import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import { convertDateToReadable, metersToReadable, minutesToReadable } from '../utils/Formatter';
 
@@ -10,25 +11,18 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import { Box } from '@mui/system';
-import StationModal from './StationModal';
-import { Button } from '@mui/material';
 
 /**
- * List for journeys
+ * List journeys
  * @returns DataGrid
  */
-const DataGridForJourneys = ({ stations }) => {
+const DataGridForJourneys = ({ setSelectedStation, setShowModal }) => {
   const [journeys, setJourneys] = useState([]);
   const [pageSize, setPageSize] = useState(15);
   const [page, setPage] = useState(1);
   const [rowCount, setRowCount] = useState(0);
   const [sortBy, setSortBy] = useState({field: 'departure', sort: 'asc'});
   const [loading, setLoading] = useState(true);
-  const [showModal, setShowModal] = useState(false);
-  const [selectedStation, setSelectedStation] = useState(null);
-
-  const handleClose = () => setShowModal(false);
 
   useEffect(() => {
     setLoading(true);
@@ -53,9 +47,7 @@ const DataGridForJourneys = ({ stations }) => {
     renderCell: (params) => (
       <Box>
         <Button variant="text" sx={{ minHeight: 0, minWidth: 0, padding: 0, underline: "none", color: "inherit" }}>{params.value.station}</Button>
-        <Typography color="textSecondary" variant="caption" display="block" gutterBottom>
-          {convertDateToReadable(params.value.time)}
-        </Typography>
+        <Typography color="textSecondary" variant="caption" display="block" gutterBottom> {convertDateToReadable(params.value.time)} </Typography>
       </Box>
     )},
 
@@ -64,16 +56,16 @@ const DataGridForJourneys = ({ stations }) => {
     renderCell: (params) => (
       <Box>
         <Button variant="text" sx={{ minHeight: 0, minWidth: 0, padding: 0, underline: "none", color: "inherit" }}>{params.value.station}</Button>
-        <Typography color="textSecondary" variant="caption" display="block" gutterBottom>
-          {convertDateToReadable(params.value.time)}
-        </Typography>
+        <Typography color="textSecondary" variant="caption" display="block" gutterBottom> {convertDateToReadable(params.value.time)} </Typography>
       </Box>
     )},
+
     {field: "distance", headerName: "Distance", width: 120,
-      renderCell: (params) => (<Typography>{metersToReadable(params.value)}</Typography>)
+      renderCell: (params) => (<Typography> {metersToReadable(params.value)} </Typography>)
     },
+
     {field: "duration", headerName: "Duration", width: 120,
-      renderCell: (params) => (<Typography>{minutesToReadable(params.value)}</Typography>)
+      renderCell: (params) => (<Typography> {minutesToReadable(params.value)} </Typography>)
     },
   ]
 
@@ -88,7 +80,6 @@ const DataGridForJourneys = ({ stations }) => {
   
   return (
     <div style={{ display: 'flex', width:'800px' }}>
-      {selectedStation ? <StationModal handleClose={handleClose} open={showModal} selectedStation={selectedStation} stations={stations} /> : null }
       <div style={{ flexGrow: 1 }}>
         <DataGrid
           rows={journeys}
@@ -113,37 +104,39 @@ const DataGridForJourneys = ({ stations }) => {
 }
 
 DataGridForJourneys.propTypes = {
-  stations: PropTypes.array,
+  setSelectedStation: PropTypes.func,
+  setShowModal: PropTypes.func
 }
 
 /**
  * DataGrid for listing stations
  * @returns DataGrid
  */
-const DataGridForStations = ({ stations }) => {
+const DataGridForStations = ({ stations, setSelectedStation, setShowModal }) => {
   const columns = [
     {field: "station", headerName: "Station", width: 250,
       renderCell: (params) => (
-        <div>
-          <Typography variant="subtitle2">
-            <Link href={`/stations/${params.value.id}`} underline="none" color="inherit">
-              {params.value.name}
-            </Link>
-          </Typography>
-        </div>
+          <Button variant="text" sx={{ minHeight: 0, minWidth: 0, padding: 0, underline: "none", color: "inherit" }}>{params.value.name}</Button>
       ), sortComparator: (v1, v2) => v1.name.localeCompare(v2.name)
     },
+
     {field: "address", headerName: "Address", width: 250, 
       renderCell: (params) => (
         <div>
-          <Typography variant="subtitle2">{params.value.street}</Typography>
+          <Typography variant="subtitle2"> {params.value.street} </Typography>
           <Typography color="textSecondary" variant="caption" display="block" gutterBottom>{params.value.city}</Typography>
         </div>
       ), sortComparator: (v1, v2) => v1.street.localeCompare(v2.street)
     },
+
     {field: "operator", headerName: "Operator", width: 180 },
     {field: "capacity", headerName: "Capacity", width: 100 }
   ]
+
+  const handleOnCellClick = (params) => {
+    setSelectedStation({name: params.value.name, id: params.value.id})
+    setShowModal(true);
+  };
   
   return (
     <div style={{ display: 'flex', width:'800px' }}>
@@ -153,7 +146,8 @@ const DataGridForStations = ({ stations }) => {
           columns={columns}
           pageSize={15}
           rowsPerPageOptions={[15,25,50,100]}
-          autoHeight 
+          autoHeight
+          onCellClick={handleOnCellClick}
         />
        </div>
     </div>
@@ -162,6 +156,8 @@ const DataGridForStations = ({ stations }) => {
 
 DataGridForStations.propTypes = {
   stations: PropTypes.array,
+  setSelectedStation: PropTypes.func,
+  setShowModal: PropTypes.func
 }
 
 export { DataGridForJourneys, DataGridForStations };

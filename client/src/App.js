@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './index.css';
 import { DataGridForJourneys, DataGridForStations } from './components/DataGrid';
-import StationView from './components/StationView.js';
 import StationsOnMap from './components/Map'
+import StationModal from './components/StationModal';
 import stationService from './services/stations';
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { AppBar, Box, Tab, Tabs, Toolbar, Typography } from '@mui/material';
@@ -11,6 +11,10 @@ function App() {
   const [stations, setStations] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
+
+  const [showModal, setShowModal] = useState(false);
+  const [selectedStation, setSelectedStation] = useState(null);
+  const closeModal = () => setShowModal(false);
 
   const indexToPath = {
     0: "/",
@@ -48,6 +52,7 @@ function App() {
 
   return (
     <>
+      {selectedStation ? <StationModal handleClose={closeModal} open={showModal} selectedStation={selectedStation} stations={stations} /> : null }
       <Box sx={{ flexGrow: 1 }} >
         <AppBar position="static">
           <Toolbar>
@@ -57,7 +62,7 @@ function App() {
               component="div"
               sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
               >
-              City Bike Journeys
+              City Bike App
             </Typography>
             </Toolbar>
         </AppBar>
@@ -74,10 +79,9 @@ function App() {
         justifyContent="center"
       >
         <Routes>
-          <Route path="/stations/:id" element={<StationView stations={stations}/>} />
-          <Route path="/stations" element={<DataGridForStations stations={stations} />} />
+          <Route path="/stations" element={<DataGridForStations stations={stations} setSelectedStation={setSelectedStation} setShowModal={setShowModal}/>} />
           <Route path="/map" element={<StationsOnMap stations={stations} />} />
-          <Route path="/" element={<DataGridForJourneys stations={stations}/>} />
+          <Route path="/" element={<DataGridForJourneys setSelectedStation={setSelectedStation} setShowModal={setShowModal} />} />
         </Routes>
       </Box>
       

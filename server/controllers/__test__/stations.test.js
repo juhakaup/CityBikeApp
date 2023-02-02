@@ -1,8 +1,8 @@
 const request = require('supertest');
 const app = require('../../app');
 
-describe('journey', () => {
-  it('should returns -200 Ok- if valid request', async () => {
+describe('api/station', () => {
+  it('should return -200 Ok- if valid request', async () => {
     const response = await request(app).get('/api/stations');
     expect(response.statusCode).toEqual(200);
   });
@@ -12,13 +12,13 @@ describe('journey', () => {
     expect(response.statusCode).toEqual(404);
   });
 
-  it('returns -400 bad request- if given station id is not valid number', async () => {
-    const response = await request(app).get('/api/stations/null');
+  it('returns -400 bad request- if given station id is negative', async () => {
+    const response = await request(app).get('/api/stations/-123');
     expect(response.statusCode).toEqual(400);
   });
 
-  it('returns -400 bad request- if given station id is negative', async () => {
-    const response = await request(app).get('/api/stations/-123');
+  it('returns -400 bad request- if given station id is not valid number', async () => {
+    const response = await request(app).get('/api/stations/null');
     expect(response.statusCode).toEqual(400);
   });
 });
