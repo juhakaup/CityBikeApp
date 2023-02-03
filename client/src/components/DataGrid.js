@@ -74,8 +74,10 @@ const DataGridForJourneys = ({ setSelectedStation, setShowModal }) => {
   }
 
   const handleOnCellClick = (params) => {
-    setSelectedStation({name: params.value.station ,id: params.value.id})
-    setShowModal(true);
+    if (params.field == 'departure' || params.field == 'return') {
+      setSelectedStation({name: params.value.station ,id: params.value.id})
+      setShowModal(true);
+    }
   };
   
   return (
@@ -134,8 +136,10 @@ const DataGridForStations = ({ stations, setSelectedStation, setShowModal }) => 
   ]
 
   const handleOnCellClick = (params) => {
-    setSelectedStation({name: params.value.name, id: params.value.id})
-    setShowModal(true);
+    if (params.field == 'station') {
+      setSelectedStation({name: params.value.name, id: params.value.id})
+      setShowModal(true);
+    }
   };
   
   return (
