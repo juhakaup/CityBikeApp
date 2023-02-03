@@ -1,22 +1,30 @@
 # City Bike App
 
-Solita dev academy pre-assignment.
-
 ## About
+This is the Solita dev academy pre-assignment for spring 2023.
+
 The aim of this project was to develop an app that displays stations and individual rides on Helsinki city bikes.
 
-## Installation
+## Contents
 
-### Node.js
-You must have node.js installed on your system before you can install the app.
+* [Installing](#installing)
+* [Setting up the database](#database)
+* [Adding data to the database](#adding-data-to-the-database)
+* [Running the app](#running-the-app)
+* [Technology used in the app](#technology-used-in-the-app)
 
-To check that node is installed, type `node --version` on the command prompt:
+## Installing
+
+To install the app, you must have Node.JS installed on your system.
+
+To check if node is installed, run `node -v`. 
+
+If it's not installed, download it from https://nodejs.org and install before proceeding.
 
 ```
 $ node --version
 v16.16.0
 ```
-If you have node installed, it should display the version number. If node is not installed, download it from https://nodejs.org and install, before continuing.
 
 ### Fetching the repocitory
 
@@ -47,15 +55,15 @@ $ npm install
 ## Database
 The application uses PostgreSQL database to store data.
 
-In order to use the app, you need to set up a database. If you already have PostgreSQL installed, or just want to use a local database, check the instructions for local setup.
+In order to use the app, you need to set up a database. If you have PostgreSQL installed or prefer to use a local database, follow the local setup instructions.
 
 [Local database setup](documents/localdb.md)
 
-If you don't want to install additional software or just want to test the app, you can quickly setup a cloud based database.
+If you don't want to install extra software or want to test the app quickly, you can easily set up a cloud database, follow the cloud database setup instructions.
 
 [Cloud database setup](documents/railwaydb.md)
 
-## Adding station and journey data
+## Adding data to the database
 
 Download three datasets of journey data. The data is owned by City Bike Finland.
 
@@ -70,7 +78,8 @@ And the dataset for information about Helsinki Region Transport’s (HSL) city b
 
 You can save them in the project folder for convenience.
 
-Now use `node` and `uploadData.js`-file to push the data to  database.
+Use `node` and `uploadData.js`-file in the server folder to push the data to database.
+
 
 Note that you need to insert the bicycle stations dataset first, because of database relations.
 
@@ -79,16 +88,21 @@ Use the following command to add the stations data:
 ```
 $ node uploadData.js ../Helsingin_ja_Espoon_kaupunkipyB6rA4asemat_avoin.csv
 ```
-After a short while, it should have added the data to the database.
+The data should be added to the database shortly.
+
 
 Next upload the journey data:
 ```
 $ node uploadData.js ../2021-05.csv
 ```
-This may take a while as there is quite a lot of data. 
-Do the same thing with the two remaining files.
+This may take some time due to the large amount of data.
 
-After this the app is ready to be used.
+Do the same for the two remaining files.
+
+_Note that if you are using the cloud based database this transfer method is not quite roboust enough to handle transfer errors and you may experience some lost data. It should work fine with the local database_
+
+
+After the data is transderred, the app is ready to be used.
 
 
 ## Running the app
@@ -104,7 +118,7 @@ $ npm start
 The app should automatically open a new window to your browser,
 if not, you can find it in the following address http://localhost:3000/.
 
-## Technology
+## Technology used in the app
 
 The application is written in javascript and uses the following technologies.
 
