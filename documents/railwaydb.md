@@ -66,4 +66,4 @@ You should see that the tables were created.
 
 ![Copy values from variables](./6_data.JPG)
 
-Next, [add data to the database](../README.md#adding-station-and-journey-data).
+Next, [add data to the database](../README.md#adding-data-to-the-database).

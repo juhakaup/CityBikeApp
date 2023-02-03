@@ -69,4 +69,4 @@ And it should output a list of tables, something like this:
  public | journeys      | table | postgres
  public | stations      | table | postgres
  ```
- Next, [add data to the database](../README.md#adding-station-and-journey-data).
+ Next, [add data to the database](../README.md#adding-data-to-the-database).
