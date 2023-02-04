@@ -5,6 +5,8 @@ This is the Solita dev academy pre-assignment for spring 2023.
 
 The aim of this project was to develop an app that displays stations and individual rides on Helsinki city bikes.
 
+The deployed version of the app can be found here: https://citybikeapp.fly.dev/
+
 ## Contents
 
 * [Installing](#installing)
@@ -117,6 +119,20 @@ $ npm start
 ```
 The app should automatically open a new window to your browser,
 if not, you can find it in the following address http://localhost:3000/.
+
+## Tests
+
+The application uses Jest as a testing framework.
+
+To run backend test, navigate to server folder and run:
+```
+$ npm test
+```
+
+To run fronted test, navigate to client folder and run:
+```
+$ npm test
+```
 
 ## Technology used in the app
 

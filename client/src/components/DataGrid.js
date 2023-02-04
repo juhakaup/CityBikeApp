@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
+import journeyService from '../services/journeys';
 import { DataGrid } from '@mui/x-data-grid';
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/system';
 import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import { convertDateToReadable, metersToReadable, minutesToReadable } from '../utils/Formatter';
-
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
 
 /**
  * List journeys
@@ -26,9 +22,10 @@ const DataGridForJourneys = ({ setSelectedStation, setShowModal }) => {
 
   useEffect(() => {
     setLoading(true);
-    axios.get(`http://localhost:3001/api/journeys?page=${page}&size=${pageSize}&field=${sortBy.field}&order=${sortBy.sort}`)
+    //axios.get(`http://localhost:3001/api/journeys?page=${page}&size=${pageSize}&field=${sortBy.field}&order=${sortBy.sort}`)
+    journeyService.getJourneys(page, pageSize, sortBy.field, sortBy.sort)
     .then(res => {
-      const data = res.data.content.map(journey => ({
+      const data = res.content.map(journey => ({
         'id': journey.id,
         'departure': {'station': journey.departureStationName, 'time': journey.departure, 'id': journey.departureStationId},
         'return': {'station': journey.returnStationName, 'time': journey.return, 'id': journey.returnStationId},
@@ -36,7 +33,7 @@ const DataGridForJourneys = ({ setSelectedStation, setShowModal }) => {
         'duration': journey.duration,
       }));
       setJourneys(data);
-      setRowCount(res.data.rows);
+      setRowCount(res.rows);
       setLoading(false);
     })
   }, [pageSize, page, sortBy]);

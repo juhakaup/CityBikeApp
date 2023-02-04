@@ -7,6 +7,11 @@ import stationService from './services/stations';
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { AppBar, Box, Tab, Tabs, Toolbar, Typography } from '@mui/material';
 
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+
 function App() {
   const [stations, setStations] = useState([]);
   const navigate = useNavigate();

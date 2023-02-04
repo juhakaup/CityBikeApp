@@ -49,7 +49,7 @@ const StationModal = ({ handleClose, open, selectedStation, stations}) => {
       setToCount(res.journeysToStation);
       setLoadingCounts(false);
     })
-  }, [])
+  }, [selectedStation])
   
   return(
     <Modal
