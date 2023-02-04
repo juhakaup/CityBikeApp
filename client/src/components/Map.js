@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from 'prop-types';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 
-const StationsOnMap = ({ stations }) => {
-  const [selectedStation, setSelectedStation] = useState(null);
+const StationsOnMap = ({ stations, setShowModal, setSelectedStation }) => {
   return (
     <MapContainer center={[60.209857, 24.938379]} zoom={12} scrollWheelZoom={true}>
       <TileLayer
@@ -16,32 +15,17 @@ const StationsOnMap = ({ stations }) => {
         <Marker 
           key={station.id} 
           position={ station.location }
-          eventHandlers={{ click: () => setSelectedStation(station) }}
+          eventHandlers={{ click: () => {setSelectedStation(station.station); setShowModal(true); }}}
         />
       ))};
-
-      {/* Popup for the selected station */}
-      {selectedStation && (
-        <Popup 
-          position={selectedStation.location}
-          eventHandlers={{ remove: () => setSelectedStation(null) }}
-        >
-          <div>
-            <h3>{selectedStation.station.name}</h3>
-          </div>
-          <div>
-              Address: {selectedStation.address.street} <br/>
-              Operator: {selectedStation.operator} <br/>
-              Capacity: {selectedStation.capacity}
-          </div>
-        </Popup>
-      )}
   </MapContainer>
   )
 }
 
 StationsOnMap.propTypes = {
   stations: PropTypes.array,
+  setSelectedStation: PropTypes.func,
+  setShowModal: PropTypes.func,
 }
 
 export default StationsOnMap

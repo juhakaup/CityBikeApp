@@ -80,7 +80,7 @@ function App() {
       >
         <Routes>
           <Route path="/stations" element={<DataGridForStations stations={stations} setSelectedStation={setSelectedStation} setShowModal={setShowModal}/>} />
-          <Route path="/map" element={<StationsOnMap stations={stations} />} />
+          <Route path="/map" element={<StationsOnMap stations={stations} setSelectedStation={setSelectedStation} setShowModal={setShowModal} />} />
           <Route path="/" element={<DataGridForJourneys setSelectedStation={setSelectedStation} setShowModal={setShowModal} />} />
         </Routes>
       </Box>
