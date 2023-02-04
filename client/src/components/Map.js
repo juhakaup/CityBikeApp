@@ -16,14 +16,14 @@ const StationsOnMap = ({ stations }) => {
         <Marker 
           key={station.id} 
           position={ station.location }
-          eventHandlers={{ click: () => setSelectedStation(null) }}
+          eventHandlers={{ click: () => setSelectedStation(station) }}
         />
       ))};
 
       {/* Popup for the selected station */}
       {selectedStation && (
         <Popup 
-          position={selectedStation.station.location}
+          position={selectedStation.location}
           eventHandlers={{ remove: () => setSelectedStation(null) }}
         >
           <div>

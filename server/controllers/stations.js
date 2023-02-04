@@ -15,18 +15,18 @@ router.get('/:id', async (req, res) => {
   const id = Number(req.params.id);
 
   if (isNaN(id)) {
-    res.status(400).json({success: false, message: 'Station id should be a number'});
+    return res.status(400).json({success: false, message: 'Station id should be a number'});
   }
 
   if (id < 1) {
-    res.status(400).json({success: false, message: 'Station id cannot be nagative'});
+    return res.status(400).json({success: false, message: 'Station id cannot be nagative'});
   }
   
   const station = await Station.findByPk(req.params.id);
   if (station) {
     res.json(station);
   } else {
-    res.status(404).end();
+    return res.status(404).end();
   }
 })
 
@@ -34,11 +34,11 @@ router.get('/:id/stats', async (req, res) => {
   const id = Number(req.params.id);
 
   if (isNaN(id)) {
-    res.status(400).json({success: false, message: 'Station id should be a number'});
+    return res.status(400).json({success: false, message: 'Station id should be a number'});
   }
 
   if (id < 1) {
-    res.status(400).json({success: false, message: 'Station id cannot be nagative'});
+    return res.status(400).json({success: false, message: 'Station id cannot be nagative'});
   }
 
   // get top stations from the requested station
@@ -75,18 +75,18 @@ router.get('/:id/stats', async (req, res) => {
     limit: 5
   })
 
-  res.json({ topDestinations: fromThisStation, topOrigins: toThisStation });
+  return res.json({ topDestinations: fromThisStation, topOrigins: toThisStation });
 })
 
 router.get('/:id/counts', async (req, res) => {
   const id = Number(req.params.id);
 
   if (isNaN(id)) {
-    res.status(400).json({success: false, message: 'Station id should be a number'});
+    return res.status(400).json({success: false, message: 'Station id should be a number'});
   }
 
   if (id < 1) {
-    res.status(400).json({success: false, message: 'Station id cannot be nagative'});
+    return res.status(400).json({success: false, message: 'Station id cannot be nagative'});
   }
   
   const countFrom = await Journey.count({
@@ -101,7 +101,7 @@ router.get('/:id/counts', async (req, res) => {
     }
   });
 
-  res.json({journeysFromStation: countFrom, journeysToStation: countTo});
+  return res.json({journeysFromStation: countFrom, journeysToStation: countTo});
 })
 
 module.exports = router

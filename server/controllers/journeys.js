@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
     limit: size
   });
 
-  res.json({
+  return res.json({
     content: rows,
     rows: count
   });
