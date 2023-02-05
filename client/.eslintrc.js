@@ -9,18 +9,16 @@ module.exports = {
     ],
     "overrides": [
     ],
+    "parser": "@babel/eslint-parser",
     "parserOptions": {
         "ecmaVersion": "latest",
         "sourceType": "module",
         "requireConfigFile": false,
+        "presets": ["@babel/preset-react"]
     },
     "plugins": [
         "react"
     ],
     "rules": {
-    },
-    "parser": "@babel/eslint-parser",
-    "presets": [
-        "@babel/preset-react"
-    ]
+    }
 }
