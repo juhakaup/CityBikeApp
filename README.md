@@ -11,8 +11,11 @@ The deployed version of the app can be found here: https://citybikeapp.fly.dev/
 
 * [Installing](#installing)
 * [Setting up the database](#database)
+  * [Local database setup](documents/localdb.md)
+  * [Cloud database setup](documents/railwaydb.md)
 * [Adding data to the database](#adding-data-to-the-database)
 * [Running the app](#running-the-app)
+* [Tests](#tests)
 * [Technology used in the app](#technology-used-in-the-app)
 
 ## Installing
@@ -124,10 +127,13 @@ if not, you can find it in the following address http://localhost:3000/.
 
 The application uses Jest as a testing framework.
 
+Backend tests check that the endpoints return appropriate messages depending on given request and parameters. There are also tests that check that the validation of cvs data works correctly.
+
 To run backend test, navigate to server folder and run:
 ```
 $ npm test
 ```
+Frontend tests check that a components gets rendered and displays correct output, even when the data has no been fetched yet.
 
 To run fronted test, navigate to client folder and run:
 ```
@@ -144,9 +150,13 @@ The application is written in javascript and uses the following technologies.
 * PostgreSQL
 * Sequelize
 
+I used Node.js and Express to build the backend server. These are the technologies I was the most familiar with and the idea was to build on something familiar and then do something new with the database side. For the database I chose to use PostgreSQL, basically to get some more experience with it. I used Sequelize to interact with the database. I had not used Sequelize before, but the idea of ORM was familiar from working with Django.
+
 ### Frontend
 * React
 * Material-ui
 * Leaflet
 
-Testing is done with Jest.
+For the frontend I went with React. I had used it before and knew that I could get things running quite quickly. To complicate things a bit and to learn something new, I used Material UI as a component library. For the map I used Leaflet, again, something familiar and had no trouble getting up and running.
+
+Testing was done with Jest. Made some integration tests for the backend and component test for the frontend. The coverage is not great, but tests did help me to catch some bugs in the backend. 

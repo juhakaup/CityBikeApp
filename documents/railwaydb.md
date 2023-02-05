@@ -22,13 +22,13 @@ Click on the Variables -tab to see the information needed to connect to this dat
 
 ![Copy values from variables](./5_copy.JPG)
 
-From here you need to copy the values to the .env file located in the root of the server folder.
+Next, we need to create a file named .env in the root of server folder.
 
 The contents of the file should have the following fields with the information from the website:
 
 ```
 PGUSER='postgres'
-PGHOST='hostname'
+PGHOST='pghost'
 PGPASSWORD='password'
 PGDATABASE='railway'
 PGPORT=1234
@@ -48,7 +48,7 @@ You can close the server by pressing `ctrl + C`
 ## Creating database tables
 In order to use the database, we need to create the tables first. 
 
-This can be done with the `npm run migrate` command:
+This can be done with the `npm run migrate` command in the server directory:
 
 ```
 $ npm run migrate
@@ -60,7 +60,7 @@ Using environment "development".
 
 ```
 
-You can check that the tables have been created by clicking on the data -tab.
+You can check that the tables have been created on the data-tab on the website.
 
 You should see that the tables were created.
 

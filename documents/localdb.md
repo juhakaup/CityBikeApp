@@ -17,7 +17,7 @@ After loggin in you can use the following command to create the database:
 ```
 CREATE DATABASE citybike_app;
 ```
-Next we need to setup the .env -file in the root of server and add the following content to it
+Next we need to create a file named .env in the root of server and add the following content to it
 
 ```
 PGUSER='username'
